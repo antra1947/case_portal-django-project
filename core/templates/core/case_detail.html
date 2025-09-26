@@ -1,0 +1,33 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h2>{{ case.title }}</h2>
+<p><strong>Status:</strong> {{ case.status }}</p>
+<p><strong>Description:</strong> {{ case.description }}</p>
+<p><strong>Created By:</strong> {{ case.created_by.username }}</p>
+<p><strong>Created At:</strong> {{ case.created_at|date:"d M Y, H:i" }}</p>
+
+<hr>
+
+<h4>Hearings</h4>
+<a href="{% url 'add_hearing' case.id %}" class="btn btn-primary mb-2">Schedule Hearing</a>
+<ul>
+    {% for hearing in case.hearings.all %}
+    <li>{{ hearing.hearing_date|date:"d M Y, H:i" }} - Judge: {{ hearing.judge }} - Lawyer: {{ hearing.lawyer }} - Status: {{ hearing.status }}</li>
+    {% empty %}
+    <li>No hearings scheduled.</li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<h4>Documents</h4>
+<a href="{% url 'add_document' case.id %}" class="btn btn-primary mb-2">Add Document</a>
+<ul>
+    {% for doc in case.documents.all %}
+    <li><a href="{{ doc.file.url }}">{{ doc.file.name }}</a> (Uploaded by {{ doc.uploaded_by.username }})</li>
+    {% empty %}
+    <li>No documents uploaded.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

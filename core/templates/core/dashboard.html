@@ -1,0 +1,57 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h2 class="mb-4">Dashboard</h2>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Cases</h5>
+                <p class="card-text">{{ cases.count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-bg-warning mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Ongoing Cases</h5>
+                <p class="card-text">{{ ongoing_cases.count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Closed Cases</h5>
+                <p class="card-text">{{ closed_cases.count }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 class="mt-5">Recent Cases</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Created By</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for case in cases|slice:":5" %}
+        <tr>
+            <td><a href="{% url 'case_detail' case.id %}">{{ case.title }}</a></td>
+            <td>{{ case.status }}</td>
+            <td>{{ case.created_by.username }}</td>
+            <td>{{ case.created_at|date:"d M Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No cases found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
