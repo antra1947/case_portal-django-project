@@ -14,18 +14,6 @@ Traditional case management relies on manual processes which lead to delays, ine
 - Notifications for new hearings
 - Secure access: Only authenticated users can manage their own cases
 
-## Screenshots
-**Dashboard View**  
-![Dashboard](screenshots/dashboard.png)
-
-**Case Detail View**  
-![Case Detail](screenshots/case_detail.png)
-
-**Add Case Form**  
-![Add Case](screenshots/add_case.png)
-
-**Notifications**  
-![Notifications](screenshots/notifications.png)
 
 ## Technologies Used
 - Backend: Python, Django  
