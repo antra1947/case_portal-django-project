@@ -1,10 +1,56 @@
 {% extends "core/base.html" %}
 
 {% block content %}
-<h2>Add New Case</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<style>
+    /* Add Case page container with background image */
+    .add-case-container {
+        background: url("https://images.unsplash.com/photo-1589829085413-56de8ae18d76?auto=format&fit=crop&w=1600&q=80") no-repeat center center fixed;
+        background-size: cover;
+        min-height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 0;
+    }
+
+    /* Form overlay */
+    .form-box {
+        width: 450px;
+        padding: 25px;
+        background: rgba(0, 0, 0, 0.65);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        color: white;
+    }
+
+    .form-box button {
+        background-color: #007bff;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .form-box button:hover {
+        background-color: #0056b3;
+    }
+
+    .form-box h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="add-case-container">
+    <div class="form-box">
+        <h2>Add New Case</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

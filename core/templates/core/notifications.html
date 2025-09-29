@@ -1,13 +1,58 @@
 {% extends "core/base.html" %}
+
 {% block content %}
-<h2>Notifications</h2>
-<ul class="list-group">
-    {% for note in notifications %}
-    <li class="list-group-item {% if not note.is_read %}list-group-item-warning{% endif %}">
-        {{ note.message }} <small class="text-muted">({{ note.date|date:"d M Y, H:i" }})</small>
-    </li>
-    {% empty %}
-    <li class="list-group-item">No notifications.</li>
-    {% endfor %}
-</ul>
+<style>
+    /* Notifications page background */
+    .notifications-container {
+        background: url("https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=1600&q=80") no-repeat center center fixed;
+        background-size: cover;
+        min-height: 80vh;
+        padding: 40px 20px;
+        border-radius: 12px;
+    }
+
+    /* Overlay for readability */
+    .overlay {
+        background: rgba(0, 0, 0, 0.65);
+        padding: 20px;
+        border-radius: 12px;
+        color: white;
+    }
+
+    .overlay h2, .overlay ul, .overlay li, .overlay small {
+        color: white !important;
+    }
+
+    .list-group-item {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: white;
+        margin-bottom: 8px;
+        border-radius: 8px;
+    }
+
+    .list-group-item-warning {
+        background: rgba(255, 193, 7, 0.6);
+        color: black;
+    }
+
+    .text-muted {
+        color: #ddd !important;
+    }
+</style>
+
+<div class="notifications-container">
+    <div class="overlay">
+        <h2>Notifications</h2>
+        <ul class="list-group">
+            {% for note in notifications %}
+            <li class="list-group-item {% if not note.is_read %}list-group-item-warning{% endif %}">
+                {{ note.message }} <small class="text-muted">({{ note.date|date:"d M Y, H:i" }})</small>
+            </li>
+            {% empty %}
+            <li class="list-group-item">No notifications.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}

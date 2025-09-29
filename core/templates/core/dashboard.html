@@ -1,57 +1,133 @@
 {% extends "core/base.html" %}
-
 {% block content %}
-<h2 class="mb-4">Dashboard</h2>
-<div class="row">
-    <div class="col-md-4">
-        <div class="card text-bg-primary mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Total Cases</h5>
-                <p class="card-text">{{ cases.count }}</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card text-bg-warning mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Ongoing Cases</h5>
-                <p class="card-text">{{ ongoing_cases.count }}</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card text-bg-success mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Closed Cases</h5>
-                <p class="card-text">{{ closed_cases.count }}</p>
-            </div>
-        </div>
-    </div>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        body {
+            background: url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80") no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.65);
+            min-height: 100vh;
+            padding: 30px;
+            border-radius: 12px;
+        }
+        h1, h2, h4, table,p,  th, p {
+            color: white !important;
+        }
+        td{
+            color: black !important;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.5);
+        }
+        .table {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .table th {
+            background: rgba(0,0,0,0.6);
+        }
+        .dashboard-links {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .dashboard-links a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .dashboard-links a:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <h1 class="text-center mb-4">Welcome to Dashboard</h1>
+        <p class="text-center">Select an option below:</p>
+        <div class="dashboard-links">
+            <a href="{% url 'case_list' %}">📂 View Cases</a>
+            <a href="{% url 'add_case' %}">➕ Add Case</a>
+            <a href="{% url 'notifications' %}">🔔 Notifications</a>
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" style="margin:10px; padding:12px 20px; background:#dc3545; color:white; border-radius:8px; border:none; cursor:pointer;">
+        🚪 Logout
+    </button>
+</form>
 
-<h4 class="mt-5">Recent Cases</h4>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Created By</th>
-            <th>Created At</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for case in cases|slice:":5" %}
-        <tr>
-            <td><a href="{% url 'case_detail' case.id %}">{{ case.title }}</a></td>
-            <td>{{ case.status }}</td>
-            <td>{{ case.created_by.username }}</td>
-            <td>{{ case.created_at|date:"d M Y" }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4">No cases found.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </div>
+
+        <h2 class="mt-5">Case Overview</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Cases</h5>
+                        <p class="card-text fs-4">{{ cases.count }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-bg-warning mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Ongoing Cases</h5>
+                        <p class="card-text fs-4">
+                            {{ cases|dictsort:"status"|length }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Closed Cases</h5>
+                        <p class="card-text fs-4">
+                            {{ cases|dictsort:"status"|length }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4 class="mt-5">Recent Cases</h4>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Created By</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for case in cases|slice:":5" %}
+                <tr>
+                    <td><a href="{% url 'case_detail' case.id %}" class="text-info">{{ case.title }}</a></td>
+                    <td>{{ case.status }}</td>
+                    <td>{{ case.created_by.username }}</td>
+                    <td>{{ case.created_at|date:"d M Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">No cases found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
 {% endblock %}

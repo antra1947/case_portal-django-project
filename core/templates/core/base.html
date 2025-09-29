@@ -1,54 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Management Portal</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CasePortal</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <style>
+    /* Professional background image for entire site */
+    body {
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                  url('https://images.unsplash.com/photo-1599058917214-8f3f36f618e6?auto=format&fit=crop&w=1350&q=80') 
+                  no-repeat center center/cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      color: #fff; /* default text color over dark overlay */
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(0,64,128,0.85); /* semi-transparent dark blue */
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: #fff !important;
+    }
+
+    .nav-link {
+      color: #e0e0e0 !important;
+      margin-right: 10px;
+    }
+
+    .nav-link:hover {
+      color: #ffffff !important;
+    }
+
+    /* Logout button styled like nav link */
+    .logout-btn {
+      background: none;
+      border: none;
+      color: #e0e0e0;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .logout-btn:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* Main container */
+    .container {
+      margin-top: 30px;
+    }
+
+    /* Card design */
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease-in-out;
+      background: rgba(255, 255, 255, 0.9); /* slightly transparent card for readability */
+      color: #000; /* card text color */
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-header {
+      background: #004080;
+      color: white;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: #004080;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: #0059b3;
+    }
+  </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'dashboard' %}">CasePortal</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'case_list' %}">Cases</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'add_case' %}">Add Case</a>
-        </li>
-        {% if user.is_authenticated %}
-        <li class="nav-item">
-          <form method="post" action="{% url 'logout' %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-link nav-link" style="padding:0; margin:0; height:100%; line-height:inherit;">Logout</button>
-          </form>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'login' %}">Login</a>
-        </li>
-        {% endif %}
-      </ul>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <!-- App Name -->
+      <a class="navbar-brand" href="{% url 'dashboard' %}">CasePortal</a>
+
+      <!-- Toggler for mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar links -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'case_list' %}">Cases</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'add_case' %}">Add Case</a></li>
+
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <form method="post" action="{% url 'logout' %}" class="d-flex">
+              {% csrf_token %}
+              <button type="submit" class="nav-link logout-btn">Logout</button>
+            </form>
+          </li>
+          {% else %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    {% block content %}{% endblock %}
   </div>
-</nav>
 
-<div class="container mt-4">
-    {% block content %}
-    {% endblock %}
-</div>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

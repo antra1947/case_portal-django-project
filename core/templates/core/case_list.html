@@ -1,34 +1,78 @@
 {% extends "core/base.html" %}
 
 {% block content %}
-<h2>All Cases</h2>
-<a href="{% url 'add_case' %}" class="btn btn-success mb-3">Add New Case</a>
-<table class="table table-bordered table-hover">
-    <thead class="table-dark">
-        <tr>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Created By</th>
-            <th>Created At</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for case in cases %}
-        <tr>
-            <td>{{ case.title }}</td>
-            <td>{{ case.status }}</td>
-            <td>{{ case.created_by.username }}</td>
-            <td>{{ case.created_at|date:"d M Y" }}</td>
-            <td>
-                <a href="{% url 'case_detail' case.id %}" class="btn btn-primary btn-sm">View</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No cases available.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Case List</title>
+    <style>
+        body {
+            background: url("https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=1600&q=80") no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.65);
+            min-height: 100vh;
+            padding: 30px;
+            border-radius: 12px;
+        }
+        h2, table, th{
+            color: white !important;
+        }
+        td{
+            color: black !important;
+        }
+        .table {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .table th {
+            background: rgba(0,0,0,0.6);
+        }
+        .status.closed { color: #28a745 !important; font-weight: bold; }
+        .status.ongoing { color: #ffc107 !important; font-weight: bold; }
+        .status.pending { color: #17a2b8 !important; font-weight: bold; }
+        a.btn {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <h2>All Cases</h2>
+        <a href="{% url 'add_case' %}" class="btn btn-success mb-3">Add New Case</a>
+
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Created By</th>
+                    <th>Created At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for case in cases %}
+                <tr>
+                    <td>{{ case.title }}</td>
+                    <td class="status {{ case.status|lower }}">{{ case.status }}</td>
+                    <td>{{ case.created_by.username }}</td>
+                    <td>{{ case.created_at|date:"d M Y" }}</td>
+                    <td>
+                        <a href="{% url 'case_detail' case.id %}" class="btn btn-primary btn-sm">View</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No cases available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
 {% endblock %}
