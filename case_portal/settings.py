@@ -26,7 +26,10 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-dev-key")
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 
 # Hosts allowed to serve
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+# ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+# ALLOWED_HOSTS = ['case-portal-django-project.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'case-portal-django-project.onrender.com']
+
 
 # Application definition
 INSTALLED_APPS = [
