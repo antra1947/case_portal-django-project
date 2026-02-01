@@ -1,9 +1,13 @@
 # CasePortal - Django Case Management Portal
 
-
-
 ## Live at:  
 case-portal-django-project.onrender.com/
+
+##🔐 Test Login Credentials
+Use the following credentials to sign in on the deployed app:
+
+Username: Antra
+Password: Antragupta@04
 
 
 ## Project Overview
